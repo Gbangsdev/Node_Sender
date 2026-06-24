@@ -1,0 +1,96 @@
+Placeholder Meanings and Examples:
+
+1. ##date1##
+   Meaning: Current date and time in UTC format.
+   Example: May 14, 2024 12:30:45 PM
+
+2. ##date##
+   Meaning: Current date and time in ISO format.
+   Example: 2024-05-14T12:30:45.000Z
+
+3. ##date2##
+   Meaning: Current date in long format (month day, year).
+   Example: May 14, 2024
+
+4. ##victimemail##
+   Meaning: Recipient's email address.
+   Example: john.doe@example.com
+
+5. ##victimname##
+   Meaning: Recipient's name with the first letter capitalized.
+   Example: John
+
+6. ##victimdomain##
+   Meaning: Full domain of recipient's email address.
+   Example: example.com
+
+7. ##victimdomain1##
+   Meaning: Capitalized first part of recipient's domain.
+   Example: Example
+
+8. ##victimdomain2##
+   Meaning: Uppercase first part of recipient's domain.
+   Example: EXAMPLE
+
+9. ##victimdomain3##
+   Meaning: Customized domain format.
+   Example: Example.COM
+
+10. ##victimdomain4##
+    Meaning: Lowercase first part of recipient's domain.
+    Example: example
+
+11. ##victimdomainlogo##
+    Meaning: Logo representation based on the domain.
+    Example: Microsoft Logo (if domain includes microsoft.com)
+
+12. ##link##
+    Meaning: Dynamic link with placeholders replaced by recipient info.
+    Example: https://example.com/?email=john.doe@example.com
+
+13. ##time##
+    Meaning: Current time in AM/PM format with seconds.
+    Example: 12:30:45 PM
+
+14. ##time1##
+    Meaning: Current time in AM/PM format without seconds.
+    Example: 12:30 PM
+
+15. ##time2##
+    Meaning: Current time in GMT/UTC format with seconds.
+    Example: 04:30:45 PM
+
+16. ##randomfname##
+    Meaning: Random first name from the list.
+    Example: Alice
+
+17. ##randomlname##
+    Meaning: Random last name from the list.
+    Example: Smith
+
+18. ##randomcompany##
+    Meaning: Random company name from the list.
+    Example: ABC Corporation
+
+19. ##words##
+    Meaning: Sequentially fetched word from the words list.
+    Example: Apple
+
+20. ##victimb64email##
+    Meaning: Base64-encoded version of recipient's email.
+    Example: am9obi5kb2VAZXhhbXBsZS5jb20=
+
+21. ##num{i}##
+    Meaning: Random {i}-digit number.
+    Example: ##num4## might be replaced by 8392
+
+22. ##stringlower{i}##
+    Meaning: Random {i}-character lowercase string.
+    Example: ##stringlower5## might be replaced by "abcde"
+
+23. ##stringupper{i}##
+    Meaning: Random {i}-character uppercase string.
+    Example: ##stringupper3## might be replaced by "XYZ"
+
+24. CompanyLogo: https://logo.clearbit.com/##victimdomain###
+

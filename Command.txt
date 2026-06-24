@@ -1,0 +1,347 @@
+# Commands Reference for letter.html
+
+This document lists all available commands that can be used in `letter.html` and other HTML templates. Commands are formatted with double hash marks on both sides: `##command##`.
+
+---
+
+## Table of Contents
+
+1. [Date & Time Commands](#date--time-commands)
+2. [Email & Recipient Commands](#email--recipient-commands)
+3. [Domain Commands](#domain-commands)
+4. [Random Data Commands](#random-data-commands)
+5. [Dynamic Commands (with parameters)](#dynamic-commands-with-parameters)
+6. [Link & QR Code Commands](#link--qr-code-commands)
+7. [Special Commands](#special-commands)
+
+---
+
+## Date & Time Commands
+
+### `##date1##`
+- **Description**: Current date and time in UTC format (localized US format)
+- **Example Output**: `May 14, 2024 12:30:45 PM`
+- **Usage**: Displays the current date and time when the email is generated
+- **How it works**: Uses `toLocaleString('en-US', { timeZone: 'UTC' })`
+
+### `##date##`
+- **Description**: Current date and time in ISO 8601 format
+- **Example Output**: `2024-05-14T12:30:45.000Z`
+- **Usage**: Standard ISO timestamp format
+- **How it works**: Uses `toISOString()` method
+
+### `##date2##`
+- **Description**: Current date in long format (month name, day, year)
+- **Example Output**: `May 14, 2024`
+- **Usage**: Human-readable date format without time
+- **How it works**: Uses `toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })`
+
+### `##time##`
+- **Description**: Current time in AM/PM format with seconds
+- **Example Output**: `12:30:45 PM`
+- **Usage**: Displays time with seconds included
+- **How it works**: Uses `toLocaleTimeString()` with seconds enabled
+
+### `##time1##`
+- **Description**: Current time in AM/PM format without seconds
+- **Example Output**: `12:30 PM`
+- **Usage**: Displays time without seconds
+- **How it works**: Uses `toLocaleTimeString()` with seconds disabled
+
+### `##time2##`
+- **Description**: Current time in GMT/UTC format with seconds
+- **Example Output**: `04:30:45 PM`
+- **Usage**: Displays time in GMT/UTC timezone
+- **How it works**: Uses `toLocaleTimeString()` with GMT timezone
+
+---
+
+## Email & Recipient Commands
+
+### `##victimemail##`
+- **Description**: Full email address of the recipient
+- **Example Output**: `john.doe@example.com`
+- **Usage**: Displays the recipient's complete email address
+- **How it works**: Extracted directly from the recipient parameter
+
+### `##victimb64email##`
+- **Description**: Base64-encoded version of the recipient's email address
+- **Example Output**: `am9obi5kb2VAZXhhbXBsZS5jb20=`
+- **Usage**: Useful for URL encoding or obfuscation in links
+- **How it works**: Uses `Buffer.from(recipient).toString('base64')`
+
+### `##victimname##`
+- **Description**: Email local part (username) with first letter capitalized
+- **Example Output**: `John` (from `john.doe@example.com`)
+- **Usage**: Displays a personalized name derived from the email
+- **How it works**: Extracts the part before `@`, capitalizes the first character
+
+---
+
+## Domain Commands
+
+### `##victimdomain##`
+- **Description**: Full domain name from the recipient's email
+- **Example Output**: `example.com`
+- **Usage**: Displays the complete domain
+- **How it works**: Extracts the part after `@` in the email address
+
+### `##victimdomain1##`
+- **Description**: First part of domain with first letter capitalized
+- **Example Output**: `Example` (from `example.com`)
+- **Usage**: Commonly used for company names or branding
+- **How it works**: Splits domain by `.`, capitalizes first character of the first part
+
+### `##victimdomain2##`
+- **Description**: First part of domain in all uppercase
+- **Example Output**: `EXAMPLE` (from `example.com`)
+- **Usage**: For emphasis or headers
+- **How it works**: Splits domain by `.`, converts first part to uppercase
+
+### `##victimdomain3##`
+- **Description**: Customized domain format (capitalized first part + uppercase extension)
+- **Example Output**: `Example.COM` (from `example.com`)
+- **Usage**: Alternative domain formatting
+- **How it works**: Capitalizes first part, uppercases the extension (e.g., `.com`)
+
+### `##victimdomain4##`
+- **Description**: First part of domain in all lowercase
+- **Example Output**: `example` (from `example.com`)
+- **Usage**: Lowercase domain reference
+- **How it works**: Splits domain by `.`, converts first part to lowercase
+
+### `##victimdomainlogo##`
+- **Description**: Logo representation based on the domain
+- **Example Output**: `Microsoft Logo` (if domain includes `microsoft.com`), otherwise `Generic Logo`
+- **Usage**: Returns a text representation of the logo (can be customized)
+- **How it works**: Checks if domain includes specific strings (currently only checks for `microsoft.com`)
+
+---
+
+## Random Data Commands
+
+### `##randomfname##`
+- **Description**: Random first name from the `fnames.txt` file
+- **Example Output**: `Alice`, `John`, `Sarah`
+- **Usage**: Generates random first names for personalization
+- **How it works**: Reads from `fnames.txt`, randomly selects one entry
+
+### `##randomlname##`
+- **Description**: Random last name from the `lnames.txt` file
+- **Example Output**: `Smith`, `Johnson`, `Williams`
+- **Usage**: Generates random last names
+- **How it works**: Reads from `lnames.txt`, randomly selects one entry
+
+### `##randomcompany##`
+- **Description**: Random company name from the `companyNames.txt` file
+- **Example Output**: `ABC Corporation`, `Tech Solutions Inc`
+- **Usage**: Generates random company names
+- **How it works**: Reads from `companyNames.txt`, randomly selects one entry
+
+### `##words##`
+- **Description**: Sequentially fetched word from the `words.txt` file
+- **Example Output**: `Apple`, `Banana`, `Cherry` (cycles through the list)
+- **Usage**: Gets words in order, wrapping around when the list ends
+- **How it works**: Maintains an index that increments with each use, cycles through `words.txt`
+
+### `##words1##`
+- **Description**: Sequentially fetched word from the `words1.txt` file
+- **Example Output**: Cycles through words in `words1.txt`
+- **Usage**: Alternative word list for sequential word retrieval
+- **How it works**: Same as `##words##` but uses `words1.txt` file
+
+---
+
+## Dynamic Commands (with parameters)
+
+These commands accept a numeric parameter to specify length or count.
+
+### `##num{number}##`
+- **Description**: Random number with specified number of digits
+- **Syntax**: `##num4##`, `##num8##`, `##num16##`, etc.
+- **Example Output**: 
+  - `##num4##` → `8392`
+  - `##num8##` → `12345678`
+- **Usage**: Generates random numeric strings of any length
+- **How it works**: Generates a random number with the specified digit count, padding with zeros if needed
+
+### `##stringlower{number}##`
+- **Description**: Random lowercase string with specified length
+- **Syntax**: `##stringlower5##`, `##stringlower8##`, `##stringlower24##`, etc.
+- **Example Output**: 
+  - `##stringlower5##` → `abcde`
+  - `##stringlower8##` → `xyzabcde`
+  - `##stringlower24##` → `abcdefghijklmnopqrstuvwx`
+- **Usage**: Generates random lowercase alphabetic strings
+- **How it works**: Randomly selects characters from `a-z` for the specified length
+
+### `##stringupper{number}##`
+- **Description**: Random uppercase string with specified length
+- **Syntax**: `##stringupper3##`, `##stringupper8##`, `##stringupper16##`, etc.
+- **Example Output**: 
+  - `##stringupper3##` → `XYZ`
+  - `##stringupper8##` → `ABCDEFGH`
+- **Usage**: Generates random uppercase alphabetic strings
+- **How it works**: Randomly selects characters from `A-Z` for the specified length
+
+---
+
+## Link & QR Code Commands
+
+### `##link##`
+- **Description**: Dynamic link with placeholders replaced by recipient info
+- **Example Output**: `https://example.com/?email=john.doe@example.com`
+- **Usage**: Gets the next link from `links.txt` with placeholders replaced
+- **How it works**: 
+  - Reads links from `links.txt` sequentially
+  - Replaces `##victimb64email##` and `##victimemail##` in the link template
+  - Cycles through links when the list ends
+
+### `##qrcode##`
+- **Description**: QR code image generated from the link
+- **Example Output**: `<img src="data:image/png;base64,iVBORw0KGgoAAAANS..." alt="QR Code">`
+- **Usage**: Generates a QR code image that can be scanned
+- **How it works**: 
+  - Automatically gets the link using `getNextLink(recipient)`
+  - Generates a QR code data URL using the QRCode library
+  - Returns an HTML `<img>` tag with the QR code
+  - Default size is 200px, colors are black on white
+
+---
+
+## Special Commands
+
+### `##obfuscatelink(URL)##`
+- **Description**: Obfuscates a URL by inserting invisible Unicode characters
+- **Syntax**: `##obfuscatelink(YOUR_URL_HERE)##`
+- **Example Usage**: 
+  ```html
+  <a href="##obfuscatelink(http://example.com/page)##">Click Here</a>
+  ```
+- **With Placeholders**: 
+  ```html
+  <a href="##obfuscatelink(http://test.my/gh/jk/##stringlower8##/##victimb64email##)##">
+      Review Password Settings
+  </a>
+  ```
+- **How it works**: 
+  1. First replaces any placeholders inside the URL template
+  2. Inserts invisible Unicode characters (Zero-Width Space U+200B and Soft Hyphen U+00AD) between characters
+  3. URL-encodes the final result
+  4. Makes links harder to detect by security scanners while remaining functional
+- **Supported Placeholders in URLs**: 
+  - `##victimb64email##`, `##victimemail##`, `##victimname##`
+  - `##victimdomain##`, `##victimdomain1##`, `##victimdomain2##`, `##victimdomain3##`, `##victimdomain4##`
+  - `##num{number}##`, `##stringlower{number}##`, `##stringupper{number}##`
+- **Obfuscation Details**: 
+  - Uses Zero-Width Space (U+200B) - invisible character
+  - Uses Soft Hyphen (U+00AD) - invisible character
+  - ~50% probability of inserting each character type between URL characters
+  - Final result is URL-encoded to hide the obfuscation
+
+---
+
+## Usage Examples
+
+### Example 1: Basic Email Template
+```html
+<p>Hello ##victimname##,</p>
+<p>Your email: ##victimemail##</p>
+<p>Domain: ##victimdomain1##</p>
+<p>Date: ##date2##</p>
+```
+
+### Example 2: Link with Obfuscation
+```html
+<a href="##obfuscatelink(https://##victimdomain##/verify?token=##stringlower24##&user=##victimb64email##)##">
+    Verify Your Account
+</a>
+```
+
+### Example 3: QR Code Display
+```html
+<div class="qr-code">
+    ##qrcode##
+</div>
+```
+
+### Example 4: Dynamic Content
+```html
+<p>Your verification code: ##num6##</p>
+<p>Session ID: ##stringlower16##</p>
+<p>Reference: ##stringupper8##</p>
+```
+
+### Example 5: Complete Email Template
+```html
+<html>
+<body>
+    <h1>##victimdomain1##'s Notification</h1>
+    <p>Hello ##victimname##,</p>
+    <p>Your account (##victimemail##) requires verification.</p>
+    <p>Scan the QR code below:</p>
+    <div>##qrcode##</div>
+    <p>Or click: <a href="##obfuscatelink(https://verify.##victimdomain##/##stringlower8##/##victimb64email##)##">here</a></p>
+    <p>Date: ##date2## at ##time1##</p>
+</body>
+</html>
+```
+
+---
+
+## Processing Order
+
+When placeholders are replaced, they are processed in this order:
+
+1. **First**: `##obfuscatelink(...)##` commands are processed (placeholders inside URLs are replaced first)
+2. **Second**: `##qrcode##` is checked and processed if present
+3. **Third**: Dynamic placeholders (`##num{number}##`, `##stringlower{number}##`, `##stringupper{number}##`) are replaced
+4. **Finally**: All other static placeholders are replaced
+
+---
+
+## File Dependencies
+
+Some commands require external text files to function:
+
+- `fnames.txt` - Required for `##randomfname##`
+- `lnames.txt` - Required for `##randomlname##`
+- `companyNames.txt` - Required for `##randomcompany##`
+- `words.txt` - Required for `##words##`
+- `words1.txt` - Required for `##words1##`
+- `links.txt` - Required for `##link##` and `##qrcode##`
+
+---
+
+## Notes
+
+- All commands are case-sensitive: `##victimemail##` works, but `##VictimEmail##` does not
+- Commands can be used multiple times in the same template
+- Dynamic commands (`##num{number}##`, etc.) generate new random values each time they're used
+- Sequential commands (`##words##`, `##words1##`, `##link##`) maintain state and cycle through their respective lists
+- The `##qrcode##` command automatically uses the link from `links.txt` - you don't need to specify it separately
+- Obfuscated links remain fully functional despite containing invisible characters
+
+---
+
+## Troubleshooting
+
+### Command not being replaced
+- Check spelling and case sensitivity
+- Ensure the command has exactly two hash marks on each side: `##command##`
+- Verify the command is listed in this reference
+
+### QR code not appearing
+- Ensure `links.txt` contains at least one link
+- Check that the link format is valid
+- Verify the QRCode library is properly installed
+
+### Obfuscated link not working
+- Test the link in a browser to ensure it's still functional
+- Check that placeholders inside the URL are valid
+- Verify the URL syntax is correct
+
+### Random data not loading
+- Ensure the required text files exist (fnames.txt, lnames.txt, etc.)
+- Check that the files contain data (one item per line)
+- Verify file paths are correct relative to the script location
